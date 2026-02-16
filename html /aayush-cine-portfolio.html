@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aayush Cine — Designed to Be Remembered</title>
+
+  <!-- DM Sans for body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       FONTS
+       Aileron Bold — loaded from cdnfonts CDN
+       Apple Garamond Bold Italic — system / CDN fallback
+    ───────────────────────────────────────── */
+    @font-face {
+      font-family: 'Aileron';
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+      src: url('https://cdn.jsdelivr.net/gh/suitbagstudio/fonts@main/Aileron/Aileron-Bold.woff2') format('woff2'),
+           url('https://fonts.cdnfonts.com/s/15112/Aileron-Bold.woff') format('woff');
+    }
+    @font-face {
+      font-family: 'Aileron';
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+      src: url('https://cdn.jsdelivr.net/gh/suitbagstudio/fonts@main/Aileron/Aileron-Regular.woff2') format('woff2'),
+           url('https://fonts.cdnfonts.com/s/15112/Aileron-Regular.woff') format('woff');
+    }
+    /* Apple Garamond — used SPARINGLY for italic accent phrases only */
+    @font-face {
+      font-family: 'AppleGaramond';
+      font-weight: 700;
+      font-style: italic;
+      font-display: swap;
+      /* Apple Garamond is a system font on macOS; we reference it directly
+         and fall back to Garamond → Georgia for other OS */
+      src: local('Apple Garamond Bold Italic'),
+           local('AppleGaramond-BoldItalic'),
+           url('assets/fonts/AppleGaramond-BoldItalic.woff2') format('woff2');
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0a0a0a;
+      --white:   #f5f4f0;
+      --gray-1:  #1a1a1a;
+      --gray-2:  #2a2a2a;
+      --gray-3:  #888;
+      --gray-4:  #ccc;
+      --accent:  #e8e0d0;
+
+      /* Font stack */
+      --font-display: 'Aileron', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-accent:  'AppleGaramond', 'Apple Garamond', Garamond, 'EB Garamond', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+
+      /* Tracking — tight throughout */
+      --track-display: -0.025em;   /* Aileron headlines */
+      --track-accent:  -0.015em;   /* Garamond accent phrases */
+      --track-ui:       0.04em;    /* uppercase UI labels */
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--white);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(245,244,240,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+    .cursor.hover  { width: 16px; height: 16px; }
+    .cursor-ring.hover { width: 56px; height: 56px; border-color: rgba(245,244,240,0.7); }
+
+    /* ─── GRAIN OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.38;
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gray-2); border-radius: 2px; }
+
+    /* ════════════════════════════════════
+       TYPOGRAPHY UTILITIES
+    ════════════════════════════════════ */
+    /* Main display headings — Aileron Bold, tight tracking */
+    .t-display {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: var(--track-display);
+      line-height: 0.93;
+    }
+    /* Rare italic accent — Apple Garamond Bold Italic */
+    .t-accent {
+      font-family: var(--font-accent);
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: var(--track-accent);
+    }
+    /* Small uppercase UI labels */
+    .t-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: var(--track-ui);
+      text-transform: uppercase;
+      color: var(--gray-3);
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 900;
+      padding: 22px 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, border-bottom 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 14px 52px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: var(--track-display);
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+    .logo-mark {
+      width: 27px; height: 27px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-mark svg { width: 13px; height: 13px; fill: var(--black); }
+    /* If logo image exists in assets */
+    .logo-mark img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; }
+    .logo-mark img.loaded { display: block; }
+    .logo-mark img.loaded + svg { display: none; }
+
+    .nav-cta {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: var(--track-ui);
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      border: none;
+      padding: 10px 22px;
+      border-radius: 2px;
+      cursor: none;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.82; transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 52px 88px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 26px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(58px, 9.2vw, 132px);
+      line-height: 0.92;
+      letter-spacing: var(--track-display);
+      color: var(--white);
+      max-width: 960px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+    /* "Be Remembered" — the ONE place Apple Garamond appears in hero */
+    .hero-headline .accent-phrase {
+      font-family: var(--font-accent);
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: var(--track-accent);
+      color: var(--gray-3);
+    }
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: 64px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .hero-sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--gray-3);
+      max-width: 310px;
+      line-height: 1.72;
+    }
+    .hero-cta { display: flex; align-items: center; gap: 18px; }
+
+    .btn-primary {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: var(--track-ui);
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      border: none;
+      padding: 16px 34px;
+      cursor: none;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { opacity: 0.84; transform: translateY(-2px); }
+
+    .btn-ghost {
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--gray-3);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-2);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--white); border-color: var(--gray-3); }
+
+    .btn-outline {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: var(--track-ui);
+      text-transform: uppercase;
+      color: var(--white);
+      background: transparent;
+      border: 1px solid var(--gray-2);
+      padding: 16px 32px;
+      cursor: none;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      display: inline-block;
+    }
+    .btn-outline:hover { background: var(--gray-2); border-color: var(--gray-3); }
+
+    /* ─── TICKER ─── */
+    .ticker-wrap {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      overflow: hidden;
+      border-top: 1px solid var(--gray-2);
+      padding: 13px 0;
+      opacity: 0;
+      animation: fadeIn 1s 1.2s forwards;
+    }
+    .ticker {
+      display: flex;
+      gap: 60px;
+      width: max-content;
+      animation: ticker 24s linear infinite;
+    }
+    .ticker-item {
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      white-space: nowrap;
+      font-family: var(--font-body);
+    }
+    .ticker-item span { color: var(--gray-2); margin: 0 14px; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ─── DIVIDER ─── */
+    .section-divider { height: 1px; background: var(--gray-2); margin: 0 52px; }
+
+    /* ─── SECTION HEADER COMPONENTS ─── */
+    .section-tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      border: 1px solid var(--gray-2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 26px;
+    }
+    /* Section titles use Aileron Bold, very tight */
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(38px, 5.2vw, 74px);
+      line-height: 1;
+      letter-spacing: var(--track-display);
+    }
+    /* Italic word inside section titles — Apple Garamond (RARE use) */
+    .section-title .accent-word {
+      font-family: var(--font-accent);
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: var(--track-accent);
+    }
+
+    /* ════════════════════════════════════
+       OUR WORK
+    ════════════════════════════════════ */
+    #work { padding: 100px 52px; }
+    .work-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+    }
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
+    }
+    .video-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--gray-1);
+      cursor: none;
+    }
+    .video-card:nth-child(1) { grid-column: span 7; aspect-ratio: 16/9; }
+    .video-card:nth-child(2) { grid-column: span 5; aspect-ratio: 16/9; }
+    .video-card:nth-child(3) { grid-column: span 4; aspect-ratio: 9/14; }
+    .video-card:nth-child(4) { grid-column: span 4; aspect-ratio: 9/14; }
+    .video-card:nth-child(5) { grid-column: span 4; aspect-ratio: 9/14; }
+
+    /* Thumbnail — placed directly in the card */
+    .video-card > img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .video-card:hover > img { transform: scale(1.04); }
+
+    /* Fallback tile if thumb missing */
+    .video-thumb-placeholder {
+      width: 100%; height: 100%;
+      min-height: 180px;
+      background: var(--gray-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-2);
+    }
+
+    .video-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex;
+      align-items: flex-end;
+      padding: 18px 20px;
+    }
+    .video-card:hover .video-overlay { opacity: 1; }
+    .video-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      font-family: var(--font-body);
+    }
+    .play-btn {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.18);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      cursor: none;
+    }
+    .play-btn svg { fill: white; width: 17px; height: 17px; margin-left: 3px; }
+    .video-card:hover .play-btn { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+    /* ════════════════════════════════════
+       LOGOS (client logos / featured on)
+    ════════════════════════════════════ */
+    #logos {
+      padding: 60px 52px;
+      border-top: 1px solid var(--gray-2);
+      border-bottom: 1px solid var(--gray-2);
+    }
+    .logos-label {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .logos-grid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px 56px;
+    }
+    .logo-item {
+      height: 28px;
+      display: flex;
+      align-items: center;
+    }
+    .logo-item img {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.35;
+      transition: opacity 0.3s;
+    }
+    .logo-item img:hover { opacity: 0.7; }
+
+    /* ════════════════════════════════════
+       TESTIMONIALS
+    ════════════════════════════════════ */
+    #testimonials { padding: 100px 52px; }
+    .test-header { margin-bottom: 52px; }
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+    }
+    .test-card {
+      background: var(--gray-1);
+      padding: 30px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      border: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .test-card:hover { background: var(--gray-2); border-color: var(--gray-2); }
+    .test-avatar {
+      width: 34px; height: 34px;
+      background: var(--gray-2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; color: var(--gray-3);
+    }
+    .test-name  { font-size: 13px; font-weight: 500; color: var(--white); }
+    .test-handle { font-size: 11px; color: var(--gray-3); margin-top: 2px; }
+    .test-message {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(245,244,240,0.72);
+      line-height: 1.66;
+      font-style: italic;
+    }
+    /* Screenshot testimonial cards */
+    .test-card.image-card { padding: 0; overflow: hidden; }
+    .test-card.image-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      min-height: 200px;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .test-card.image-card:hover img { transform: scale(1.03); }
+    /* Fallback if image missing */
+    .test-thumb-placeholder {
+      min-height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gray-2);
+    }
+
+    /* ════════════════════════════════════
+       FAQ
+    ════════════════════════════════════ */
+    #faq {
+      padding: 100px 52px;
+      border-top: 1px solid var(--gray-2);
+    }
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .faq-left { position: sticky; top: 120px; }
+    .faq-left p {
+      font-size: 15px; font-weight: 300; color: var(--gray-3);
+      line-height: 1.72; margin-top: 20px; max-width: 310px;
+    }
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item { border-bottom: 1px solid var(--gray-2); overflow: hidden; }
+    .faq-question {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 28px 0;
+      cursor: none; gap: 20px;
+    }
+    .faq-question h3 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: var(--track-display);
+      color: var(--white);
+      line-height: 1.3;
+      transition: color 0.2s;
+    }
+    .faq-item.open .faq-question h3 { color: var(--gray-4); }
+    .faq-icon {
+      width: 27px; height: 27px; flex-shrink: 0;
+      border: 1px solid var(--gray-2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .faq-icon svg { width: 11px; height: 11px; fill: var(--gray-3); transition: transform 0.3s; }
+    .faq-item.open .faq-icon { background: var(--white); }
+    .faq-item.open .faq-icon svg { fill: var(--black); transform: rotate(45deg); }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+    .faq-item.open .faq-answer { max-height: 320px; }
+    .faq-answer p {
+      font-size: 14px; font-weight: 300; color: var(--gray-3);
+      line-height: 1.76; padding-bottom: 26px;
+    }
+
+    /* ════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════ */
+    #footer { background: var(--gray-1); border-top: 1px solid var(--gray-2); }
+
+    .footer-cta {
+      padding: 100px 52px 80px;
+      border-bottom: 1px solid var(--gray-2);
+    }
+    .footer-cta-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gray-3);
+      margin-bottom: 22px;
+      font-family: var(--font-body);
+    }
+    .footer-cta-headline {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(48px, 6.5vw, 92px);
+      line-height: 0.94;
+      letter-spacing: var(--track-display);
+      color: var(--white);
+      margin-bottom: 44px;
+    }
+    /* "Story." — the second Apple Garamond accent moment */
+    .footer-cta-headline .accent-phrase {
+      font-family: var(--font-accent);
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: var(--track-accent);
+      color: var(--gray-3);
+    }
+    .footer-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+    .footer-bottom {
+      padding: 40px 52px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+    }
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: var(--track-display);
+    }
+    .footer-nav {
+      display: flex; gap: 30px; list-style: none; justify-content: center;
+    }
+    .footer-nav a {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gray-3); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--white); }
+    .footer-right { text-align: right; font-size: 11px; color: var(--gray-3); }
+
+    /* Giant watermark */
+    .footer-watermark {
+      padding: 0 52px;
+      overflow: hidden;
+      line-height: 1;
+    }
+    .footer-watermark span {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(80px, 16vw, 220px);
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--gray-2);
+      white-space: nowrap;
+      display: block;
+    }
+
+    /* ════════════════════════════════════
+       ANIMATIONS
+    ════════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(38px);
+      transition: opacity 0.82s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.82s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ════════════════════════════════════
+       VIDEO MODAL
+    ════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.96);
+      z-index: 9000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(12px);
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-inner {
+      width: 90vw; max-width: 1100px;
+      position: relative;
+      transform: scale(0.95);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-overlay.open .modal-inner { transform: scale(1); }
+    .modal-video { width: 100%; aspect-ratio: 16/9; border: 1px solid var(--gray-2); }
+    .modal-close {
+      position: absolute; top: -42px; right: 0;
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray-3); background: none; border: none;
+      cursor: none; transition: color 0.2s; font-family: var(--font-body);
+    }
+    .modal-close:hover { color: var(--white); }
+
+    /* ════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════ */
+    @media (max-width: 900px) {
+      nav, nav.scrolled { padding: 16px 24px; }
+      #hero { padding: 0 24px 88px; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; gap: 32px; }
+      .section-divider { margin: 0 24px; }
+      #work, #testimonials, #faq, #logos { padding: 80px 24px; }
+      .work-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .video-card:nth-child(1),
+      .video-card:nth-child(2) { grid-column: span 2; }
+      .video-card:nth-child(3),
+      .video-card:nth-child(4),
+      .video-card:nth-child(5) { grid-column: span 1; aspect-ratio: 9/14; }
+      .test-grid { grid-template-columns: 1fr 1fr; }
+      .test-card:nth-child(5) { grid-column: span 2; }
+      .faq-layout { grid-template-columns: 1fr; gap: 40px; }
+      .faq-left { position: static; }
+      .footer-bottom { grid-template-columns: 1fr; text-align: left; padding: 32px 24px; }
+      .footer-nav { justify-content: flex-start; }
+      .footer-right { text-align: left; }
+      .footer-cta { padding: 80px 24px 60px; }
+      .footer-watermark { padding: 0 24px; }
+      .work-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+    @media (max-width: 600px) {
+      .test-grid { grid-template-columns: 1fr; }
+      .test-card:nth-child(5) { grid-column: span 1; }
+      .work-grid { grid-template-columns: 1fr; }
+      .video-card:nth-child(n) { grid-column: span 1; aspect-ratio: 16/9; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- VIDEO MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-inner">
+      <button class="modal-close" id="modalClose">Close ✕</button>
+      <iframe class="modal-video" id="modalVideo" src="" frameborder="0"
+              allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+    </div>
+  </div>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">
+      <div class="logo-mark">
+        <!-- Logo image — place at assets/logo.png or logo.jpg -->
+        <img src="assets/logo.png" alt="Aayush Cine logo" id="logoImg"
+             onerror="this.style.display='none'" />
+        <!-- Fallback SVG spark mark -->
+        <svg viewBox="0 0 14 14" id="logoFallback">
+          <path d="M7 1L9.5 5H12L9.5 8.5L11 13L7 10.5L3 13L4.5 8.5L2 5H4.5L7 1Z"/>
+        </svg>
+      </div>
+      Aayush Cine
+    </a>
+    <a href="https://calendly.com/YOUR_LINK" target="_blank" rel="noopener" class="nav-cta">Get in Touch</a>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <p class="hero-eyebrow">Video Editor · Content Creator · Visual Storyteller</p>
+
+    <h1 class="hero-headline">
+      Designed to<br/>
+      <span class="accent-phrase">Be Remembered.</span>
+    </h1>
+
+    <div class="hero-bottom">
+      <p class="hero-sub">Crafting cinematic content that cuts through the scroll. Every frame, a statement.</p>
+      <div class="hero-cta">
+        <a href="https://calendly.com/YOUR_LINK" target="_blank" rel="noopener" class="btn-primary">Book a Call</a>
+        <a href="#work" class="btn-ghost">See the Work ↓</a>
+      </div>
+    </div>
+
+    <div class="ticker-wrap">
+      <div class="ticker">
+        <span class="ticker-item">Short Form <span>·</span></span>
+        <span class="ticker-item">Long Form <span>·</span></span>
+        <span class="ticker-item">YouTube <span>·</span></span>
+        <span class="ticker-item">Instagram Reels <span>·</span></span>
+        <span class="ticker-item">Brand Films <span>·</span></span>
+        <span class="ticker-item">Podcast Cuts <span>·</span></span>
+        <span class="ticker-item">Color Grading <span>·</span></span>
+        <span class="ticker-item">Motion Graphics <span>·</span></span>
+        <!-- duplicated for seamless loop -->
+        <span class="ticker-item">Short Form <span>·</span></span>
+        <span class="ticker-item">Long Form <span>·</span></span>
+        <span class="ticker-item">YouTube <span>·</span></span>
+        <span class="ticker-item">Instagram Reels <span>·</span></span>
+        <span class="ticker-item">Brand Films <span>·</span></span>
+        <span class="ticker-item">Podcast Cuts <span>·</span></span>
+        <span class="ticker-item">Color Grading <span>·</span></span>
+        <span class="ticker-item">Motion Graphics <span>·</span></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══ OUR WORK ═══ -->
+  <section id="work">
+    <div class="work-header reveal">
+      <div>
+        <div class="section-tag">Selected Work</div>
+        <h2 class="section-title">OUR <span class="accent-word">WORK</span></h2>
+      </div>
+      <a href="https://www.instagram.com/aayush.cine/" target="_blank" rel="noopener"
+         class="btn-ghost" style="margin-bottom:8px;">All on Instagram ↗</a>
+    </div>
+
+    <!--
+    ══════════════════════════════════════════════════════════
+    VIDEO CARDS — HOW TO SET UP:
+    1. Replace data-src with your YouTube embed URL:
+       data-src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1"
+    2. Replace the <img src="assets/videos/thumb-X.jpg"> path
+       with the correct thumbnail from your assets folder.
+    3. Update data-label with a short title for each video.
+    ══════════════════════════════════════════════════════════
+    -->
+    <div class="work-grid">
+
+      <div class="video-card reveal"
+           data-src="https://www.youtube.com/embed/VIDEO_ID_1?autoplay=1"
+           data-label="Brand Film · 2025">
+        <img src="assets/videos/thumb-1.jpg" alt="Brand Film thumbnail"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="video-thumb-placeholder" style="display:none">Thumb 01</div>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label"></span></div>
+      </div>
+
+      <div class="video-card reveal reveal-delay-1"
+           data-src="https://www.youtube.com/embed/VIDEO_ID_2?autoplay=1"
+           data-label="Creator Content · 2025">
+        <img src="assets/videos/thumb-2.jpg" alt="Creator content thumbnail"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="video-thumb-placeholder" style="display:none">Thumb 02</div>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label"></span></div>
+      </div>
+
+      <div class="video-card reveal"
+           data-src="https://www.youtube.com/embed/VIDEO_ID_3?autoplay=1"
+           data-label="Short Form · Reels">
+        <img src="assets/videos/thumb-3.jpg" alt="Reel thumbnail"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="video-thumb-placeholder" style="display:none">Thumb 03</div>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label"></span></div>
+      </div>
+
+      <div class="video-card reveal reveal-delay-1"
+           data-src="https://www.youtube.com/embed/VIDEO_ID_4?autoplay=1"
+           data-label="Podcast Edit · 2025">
+        <img src="assets/videos/thumb-4.jpg" alt="Podcast edit thumbnail"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="video-thumb-placeholder" style="display:none">Thumb 04</div>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label"></span></div>
+      </div>
+
+      <div class="video-card reveal reveal-delay-2"
+           data-src="https://www.youtube.com/embed/VIDEO_ID_5?autoplay=1"
+           data-label="Documentary Cut">
+        <img src="assets/videos/thumb-5.jpg" alt="Documentary thumbnail"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="video-thumb-placeholder" style="display:none">Thumb 05</div>
+        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="video-overlay"><span class="video-label"></span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ CLIENT LOGOS ═══ -->
+  <!--
+  ══════════════════════════════════════════════════════════
+  LOGOS — HOW TO SET UP:
+  Place your client / brand logos inside assets/logos/
+  e.g. assets/logos/brand-name.png (white or transparent PNG)
+  They are auto-inverted to white via CSS filter.
+  Add or remove <li> items freely.
+  ══════════════════════════════════════════════════════════
+  -->
+  <section id="logos">
+    <div class="logos-label">
+      <span class="section-tag" style="margin-bottom:0">Worked With</span>
+    </div>
+    <div class="logos-grid reveal">
+      <div class="logo-item">
+        <img src="assets/logos/logo-1.png" alt="Client 1" onerror="this.parentElement.style.display='none'"/>
+      </div>
+      <div class="logo-item">
+        <img src="assets/logos/logo-2.png" alt="Client 2" onerror="this.parentElement.style.display='none'"/>
+      </div>
+      <div class="logo-item">
+        <img src="assets/logos/logo-3.png" alt="Client 3" onerror="this.parentElement.style.display='none'"/>
+      </div>
+      <div class="logo-item">
+        <img src="assets/logos/logo-4.png" alt="Client 4" onerror="this.parentElement.style.display='none'"/>
+      </div>
+      <div class="logo-item">
+        <img src="assets/logos/logo-5.png" alt="Client 5" onerror="this.parentElement.style.display='none'"/>
+      </div>
+      <div class="logo-item">
+        <img src="assets/logos/logo-6.png" alt="Client 6" onerror="this.parentElement.style.display='none'"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TESTIMONIALS ═══ -->
+  <!--
+  ══════════════════════════════════════════════════════════
+  TESTIMONIALS — HOW TO SET UP:
+  Place screenshot images at assets/testimonials/t1.png etc.
+  For text cards: edit the name, handle, and quote below.
+  ══════════════════════════════════════════════════════════
+  -->
+  <section id="testimonials">
+    <div class="test-header reveal">
+      <div class="section-tag">Testimonials</div>
+      <h2 class="section-title">HEAR IT <span class="accent-word">FROM THEM</span></h2>
+    </div>
+
+    <div class="test-grid">
+
+      <!-- Screenshot card 1 -->
+      <div class="test-card image-card reveal">
+        <img src="assets/testimonials/t1.png" alt="Testimonial screenshot"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="test-thumb-placeholder" style="display:none">Testimonial 01</div>
+      </div>
+
+      <!-- Screenshot card 2 -->
+      <div class="test-card image-card reveal reveal-delay-1">
+        <img src="assets/testimonials/t2.png" alt="Testimonial screenshot"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="test-thumb-placeholder" style="display:none">Testimonial 02</div>
+      </div>
+
+      <!-- Screenshot card 3 -->
+      <div class="test-card image-card reveal reveal-delay-2">
+        <img src="assets/testimonials/t3.png" alt="Testimonial screenshot"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="test-thumb-placeholder" style="display:none">Testimonial 03</div>
+      </div>
+
+      <!-- Screenshot card 4 -->
+      <div class="test-card image-card reveal reveal-delay-3">
+        <img src="assets/testimonials/t4.png" alt="Testimonial screenshot"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="test-thumb-placeholder" style="display:none">Testimonial 04</div>
+      </div>
+
+      <!-- Text card (keep as backup or replace with t5.png) -->
+      <div class="test-card reveal reveal-delay-4">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="test-avatar">V</div>
+          <div>
+            <div class="test-name">Vijay T.</div>
+            <div class="test-handle">@vijayt · Podcast Host</div>
+          </div>
+        </div>
+        <p class="test-message">"The design and flow is so spot on. My audience immediately noticed the quality jump."</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══ FAQ ═══ -->
+  <section id="faq">
+    <div class="faq-layout">
+
+      <div class="faq-left reveal">
+        <div class="section-tag">FAQ</div>
+        <h2 class="section-title">COMMON<br/><span class="accent-word">QUESTIONS</span></h2>
+        <p>Everything you need to know before we start working together.</p>
+      </div>
+
+      <div class="faq-list reveal reveal-delay-1">
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <h3>What's your creative philosophy?</h3>
+            <div class="faq-icon"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div>
+          </div>
+          <div class="faq-answer">
+            <p>To create content that's designed to be remembered — not to be a part of the scroll. Every edit I deliver is intentional: the pacing, the cuts, the color grading — all built to hold attention and leave a mark. Forgettable content is noise. I'm not interested in making noise.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <h3>Do you sign NDAs?</h3>
+            <div class="faq-icon"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div>
+          </div>
+          <div class="faq-answer">
+            <p>Yes, absolutely — when required. I take client confidentiality seriously. If your project involves sensitive brand assets, unreleased content, or proprietary strategy, I'm fully open to signing an NDA before we begin. Just bring it up during our call.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <h3>How many revisions do you offer?</h3>
+            <div class="faq-icon"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div>
+          </div>
+          <div class="faq-answer">
+            <p>My default is 2 rounds of revisions per video — which covers the vast majority of projects. That said, every collaboration is different. Revision rounds are fully customisable and can be agreed upfront based on project scope and complexity.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <h3>What's your turnaround time?</h3>
+            <div class="faq-icon"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div>
+          </div>
+          <div class="faq-answer">
+            <p>Short-form (Reels, Shorts, TikToks): 1–3 days. Long-form (YouTube, brand films, documentaries): 3–7 days. Rush deliveries can be arranged. I'll always give you a clear timeline at the start of each project — no surprises.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <h3>Do you work alone or with a team?</h3>
+            <div class="faq-icon"><svg viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div>
+          </div>
+          <div class="faq-answer">
+            <p>All creative decisions — storytelling, pacing, color, cuts — are 100% mine. For non-creative workflow tasks I work with 1–2 junior editors and trusted freelancers for complex technical elements. But quality control never leaves my hands. What you approve, I've personally reviewed.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer id="footer">
+    <div class="footer-cta">
+      <p class="footer-cta-label">Ready to start?</p>
+      <h2 class="footer-cta-headline reveal">
+        Tell Your<br/><span class="accent-phrase">Story.</span>
+      </h2>
+      <div class="footer-actions reveal reveal-delay-1">
+        <a href="https://calendly.com/YOUR_LINK" target="_blank" rel="noopener" class="btn-primary">Book a Call</a>
+        <a href="https://www.instagram.com/aayush.cine/" target="_blank" rel="noopener" class="btn-outline">Instagram ↗</a>
+        <a href="mailto:YOUR_EMAIL@gmail.com" class="btn-ghost" style="margin-left:8px;">YOUR_EMAIL@gmail.com</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-brand">Aayush Cine</div>
+      <ul class="footer-nav">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://www.instagram.com/aayush.cine/" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+      <div class="footer-right">© 2026 Aayush Cine. All rights reserved.</div>
+    </div>
+
+    <div class="footer-watermark">
+      <span>AAYUSH CINE</span>
+    </div>
+  </footer>
+
+  <script>
+    // ─── CUSTOM CURSOR ───
+    const cursor   = document.getElementById('cursor');
+    const ring     = document.getElementById('cursorRing');
+    let mx=0, my=0, rx=0, ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    (function loop() {
+      cursor.style.left = mx+'px'; cursor.style.top = my+'px';
+      rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+      ring.style.left = rx+'px'; ring.style.top = ry+'px';
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('a,button,.video-card,.faq-question,.test-card').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
+      el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
+    });
+
+    // ─── NAVBAR ───
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', scrollY > 60), {passive:true});
+
+    // ─── SCROLL REVEAL ───
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ─── VIDEO LABEL SYNC ───
+    document.querySelectorAll('.video-card').forEach(card => {
+      const lbl = card.dataset.label;
+      const span = card.querySelector('.video-label');
+      if(span && lbl) span.textContent = lbl;
+    });
+
+    // ─── VIDEO MODAL ───
+    const modal      = document.getElementById('modal');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalClose = document.getElementById('modalClose');
+    document.querySelectorAll('.video-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const src = card.dataset.src;
+        if(!src || src.includes('VIDEO_ID')) return; // skip placeholders
+        modalVideo.src = src;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    function closeModal() {
+      modal.classList.remove('open');
+      modalVideo.src = '';
+      document.body.style.overflow = '';
+    }
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if(e.target===modal) closeModal(); });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+    // ─── FAQ ACCORDION (keyboard accessible) ───
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      const activate = () => {
+        const item   = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-question').setAttribute('aria-expanded','false');
+        });
+        if(!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded','true');
+        }
+      };
+      btn.addEventListener('click', activate);
+      btn.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); }});
+    });
+  </script>
+</body>
+</html>
