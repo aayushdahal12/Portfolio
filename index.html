@@ -858,14 +858,24 @@
 
         @media (max-width: 600px) {
             .work-grid {
-                gap: 6px;
+                gap: 4px;
             }
 
             .video-card {
-                flex: 0 0 100%;
-                /* Full width on mobile */
-                aspect-ratio: 16/9;
-                /* Better for video previews on mobile */
+                flex: 0 0 calc(50% - 2px);
+                aspect-ratio: 9/16;
+                border-radius: 0;
+            }
+
+            .card-label {
+                font-size: 11px;
+                bottom: 8px;
+                left: 8px;
+            }
+
+            .play-btn {
+                width: 42px;
+                height: 42px;
             }
 
             .testimonials-grid {
