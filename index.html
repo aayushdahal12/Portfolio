@@ -230,6 +230,23 @@
             }
         }
 
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+                /* Smaller padding for mobile */
+            }
+
+            .hero-title {
+                font-size: 13vw !important;
+                /* Force smaller size on very small screens */
+            }
+
+            .hero-logo-display img {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
         /* --- CUSTOM CURSOR --- */
         #cursor-dot,
         #cursor-ring {
@@ -644,9 +661,7 @@
         }
 
         @media (max-width: 600px) {
-            .video-card {
-                flex: 0 0 calc(50% - 5px);
-            }
+            /* Handled in later media query */
         }
 
         /* --- CLIENT LOGOS --- */
@@ -842,13 +857,40 @@
         }
 
         @media (max-width: 600px) {
+            .work-grid {
+                gap: 6px;
+            }
+
+            .video-card {
+                flex: 0 0 100%;
+                /* Full width on mobile */
+                aspect-ratio: 16/9;
+                /* Better for video previews on mobile */
+            }
+
             .testimonials-grid {
-                grid-template-columns: 1fr;
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 16px;
+                padding-bottom: 20px;
+                /* space for scrollbar */
+                grid-template-columns: none;
+                /* Reset grid */
             }
 
             .test-card {
-                aspect-ratio: auto;
-                min-height: 300px;
+                flex: 0 0 85%;
+                /* Shows part of next card to encourage scrolling */
+                scroll-snap-align: center;
+                min-height: auto;
+                aspect-ratio: 9/16;
+                /* Maintain vertical aspect for testimonials */
+            }
+
+            /* Hide scrollbar for cleaner look but keep functionality */
+            .testimonials-grid::-webkit-scrollbar {
+                display: none;
             }
         }
 
@@ -938,6 +980,7 @@
 
             .faq-sticky {
                 position: static;
+                margin-bottom: 20px;
             }
         }
 
