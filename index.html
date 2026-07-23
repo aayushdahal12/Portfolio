@@ -986,6 +986,185 @@
             }
         }
 
+        /* ---------- Long-form view badge + watch link ---------- */
+        .view-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 11px;
+            border-radius: 100px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            pointer-events: none;
+        }
+
+        .vb-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ff4d4d;
+            box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.5); }
+            70% { box-shadow: 0 0 0 7px rgba(255, 77, 77, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
+        }
+
+        .long-meta {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3;
+            padding: 16px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .long-meta .card-label {
+            position: static;
+            transform: none;
+        }
+
+        .watch-full {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #000;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            pointer-events: auto;
+            transform: translateY(6px);
+            opacity: 0;
+            transition: opacity 0.35s var(--easing), transform 0.35s var(--easing), background 0.3s;
+        }
+
+        .long-card:hover .watch-full {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .watch-full:hover {
+            background: #fff;
+        }
+
+        /* ---------- Impact / stats section ---------- */
+        .impact-hero {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .impact-big {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: clamp(72px, 15vw, 200px);
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            display: inline-flex;
+            align-items: flex-start;
+            justify-content: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .impact-plus {
+            color: var(--grey);
+            font-size: 0.5em;
+            margin-top: 0.15em;
+        }
+
+        .impact-big-label {
+            margin-top: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.24em;
+            color: var(--grey);
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .impact-tile {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 26px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: var(--card-bg);
+            transition: transform 0.45s var(--easing), border-color 0.35s, box-shadow 0.45s var(--easing);
+        }
+
+        .impact-tile:hover {
+            transform: translateY(-5px);
+            border-color: var(--text);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.10);
+        }
+
+        .tile-num {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: clamp(34px, 4.5vw, 52px);
+            line-height: 1;
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tile-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12.5px;
+            color: var(--grey);
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ff4d4d;
+            flex-shrink: 0;
+            animation: pulse 2s infinite;
+        }
+
+        .tile-cta {
+            margin-top: auto;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .impact-tile:hover .tile-cta {
+            opacity: 1;
+        }
+
+        @media (max-width: 900px) {
+            .impact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         /* ---------- Theme toggle switch ---------- */
         .nav-right {
             display: flex;
@@ -1050,29 +1229,18 @@
            TESTIMONIAL WALL — always dark (home for dark screenshots)
         ============================================================ */
         .wall-section {
-            background: #090909;
-            color: #fff;
-            padding: 120px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 130px 0;
+            border-top: 1px solid var(--line-soft);
+            border-bottom: 1px solid var(--line-soft);
             overflow: hidden;
-        }
-
-        .wall-section .section-title {
-            color: #fff;
-        }
-
-        .wall-section .section-title .italic,
-        .wall-section .section-note {
-            color: #8f8f8f;
         }
 
         .wall {
             display: flex;
             gap: 20px;
             height: 640px;
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
-            mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 11%, #000 89%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, #000 11%, #000 89%, transparent 100%);
         }
 
         .wall-col {
@@ -1083,8 +1251,10 @@
 
         .wall-track {
             display: block;
-            animation: wallUp var(--dur, 44s) linear infinite;
+            animation: wallUp var(--dur, 32s) linear infinite;
             will-change: transform;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
         }
 
         .wall-col.down .wall-track {
@@ -1096,13 +1266,13 @@
         }
 
         @keyframes wallUp {
-            from { transform: translateY(0); }
-            to { transform: translateY(-50%); }
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(0, -50%, 0); }
         }
 
         @keyframes wallDown {
-            from { transform: translateY(-50%); }
-            to { transform: translateY(0); }
+            from { transform: translate3d(0, -50%, 0); }
+            to { transform: translate3d(0, 0, 0); }
         }
 
         .wall-card {
@@ -1111,15 +1281,15 @@
             margin-bottom: 20px;
             border-radius: 12px;
             overflow: hidden;
-            background: #151515;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--card-bg);
+            border: 1px solid var(--line);
             cursor: pointer;
-            transition: border-color 0.3s, transform 0.3s var(--easing);
+            transition: border-color 0.35s, transform 0.45s var(--easing), box-shadow 0.45s var(--easing);
         }
 
         .wall-card:hover {
-            border-color: rgba(255, 255, 255, 0.24);
-            transform: translateY(-3px);
+            transform: translateY(-4px) scale(1.012);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.20);
         }
 
         .wall-card img {
@@ -1130,8 +1300,8 @@
 
         @media (max-width: 640px) {
             .wall {
-                height: 560px;
-                gap: 14px;
+                height: 540px;
+                gap: 12px;
             }
         }
 
@@ -1204,6 +1374,96 @@
         .lightbox-close:hover {
             background: rgba(255, 255, 255, 0.12);
             transform: rotate(90deg);
+        }
+
+        /* ---------- Extra hover life on content ---------- */
+        .reel-card:hover .poster,
+        .long-card:hover .poster {
+            filter: brightness(1.06);
+        }
+
+        .reel-card,
+        .long-card,
+        .test-card,
+        .impact-tile,
+        .wall-card {
+            transform: translateZ(0);
+        }
+
+        /* ============================================================
+           MOBILE / iOS HARDENING
+        ============================================================ */
+        @media (max-width: 640px) {
+            body {
+                overflow-x: clip;
+            }
+
+            .section-head {
+                margin-bottom: 40px;
+            }
+
+            .section-note {
+                max-width: 100%;
+            }
+
+            /* keep any long strings from pushing width */
+            .card-label,
+            .tile-label,
+            .client-name,
+            .accordion-title,
+            .hero-sub,
+            .impact-big-label {
+                overflow-wrap: anywhere;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .impact-big {
+                font-size: clamp(52px, 17vw, 96px);
+            }
+
+            .impact-grid {
+                gap: 12px;
+            }
+
+            .impact-tile {
+                padding: 20px 18px;
+                border-radius: 14px;
+            }
+
+            .tile-num {
+                font-size: 30px;
+            }
+
+            .long-meta {
+                padding: 12px;
+            }
+
+            .watch-full {
+                opacity: 1;
+                transform: none;
+                padding: 7px 12px;
+                font-size: 11px;
+            }
+
+            .view-badge {
+                top: 10px;
+                left: 10px;
+                font-size: 11px;
+                padding: 5px 9px;
+            }
+
+            .nav-brand {
+                font-size: 18px;
+            }
+
+            .nav-cta {
+                font-size: 12.5px;
+            }
+
+            .nav-right {
+                gap: 14px;
+            }
         }
 
         /* ============================================================
@@ -1383,25 +1643,41 @@
         </div>
 
         <div class="long-grid">
-            <div class="long-card reveal rd-1" data-video="long-form/V1.mp4" data-label="Brand Film">
-                <img src="long-form/T1.jpg" class="poster" alt="Brand Film" loading="lazy">
+            <div class="long-card reveal rd-1" data-video="long-form/V1.mp4" data-label="Long form talking head"
+                data-yt="xiBtOsha1Io" data-seed="105133">
+                <img src="long-form/T1.jpg" class="poster" alt="Long form talking head" loading="lazy">
                 <div class="card-gradient"></div>
                 <div class="card-play"></div>
-                <div class="card-label">Brand Film</div>
+                <div class="view-badge"><span class="vb-dot"></span><span class="count" data-count="105133">0</span>
+                    views</div>
+                <div class="long-meta">
+                    <span class="card-label">Long form talking head</span>
+                    <a class="watch-full" href="https://youtu.be/xiBtOsha1Io" target="_blank" rel="noopener">Watch full
+                        ↗</a>
+                </div>
             </div>
 
-            <div class="long-card reveal rd-2" data-video="long-form/V2.mp4" data-label="Podcast">
-                <img src="long-form/T2.jpg" class="poster" alt="Podcast" loading="lazy">
+            <div class="long-card reveal rd-2" data-video="long-form/V2.mp4" data-label="Long form talking head"
+                data-yt="3BVNxJ6A_MY" data-seed="19455">
+                <img src="long-form/T2.jpg" class="poster" alt="Long form talking head" loading="lazy">
                 <div class="card-gradient"></div>
                 <div class="card-play"></div>
-                <div class="card-label">Podcast</div>
+                <div class="view-badge"><span class="vb-dot"></span><span class="count" data-count="19455">0</span>
+                    views</div>
+                <div class="long-meta">
+                    <span class="card-label">Long form talking head</span>
+                    <a class="watch-full" href="https://youtu.be/3BVNxJ6A_MY" target="_blank" rel="noopener">Watch full
+                        ↗</a>
+                </div>
             </div>
 
-            <div class="long-card reveal rd-3" data-video="long-form/V3.mp4" data-label="YouTube Edit">
-                <img src="long-form/T3.jpg" class="poster" alt="YouTube Edit" loading="lazy">
+            <div class="long-card reveal rd-3" data-video="long-form/V3.mp4" data-label="Editorial trailer">
+                <img src="long-form/T3.jpg" class="poster" alt="Editorial trailer" loading="lazy">
                 <div class="card-gradient"></div>
                 <div class="card-play"></div>
-                <div class="card-label">YouTube Edit</div>
+                <div class="long-meta">
+                    <span class="card-label">Editorial trailer</span>
+                </div>
             </div>
         </div>
     </section>
@@ -1460,25 +1736,34 @@
         </div>
     </section>
 
-    <!-- ============ CLIENT LOGOS ============ -->
-    <section class="logos-section">
-        <div class="clients-grid reveal">
-            <div class="client-item">
-                <div class="client-circle"><img src="NEW REVISIONS/logos/leviathan-nutrition.png" alt="Leviathan Nutrition" onerror="this.style.display='none'"></div>
-                <span class="client-name">Leviathan Nutrition</span>
-            </div>
-            <div class="client-item">
-                <div class="client-circle"><img src="NEW REVISIONS/logos/aayush-swamy.png" alt="Aayush Swamy" onerror="this.style.display='none'"></div>
-                <span class="client-name">Aayush Swamy</span>
-            </div>
-            <div class="client-item">
-                <div class="client-circle"><img src="NEW REVISIONS/logos/christian-foss.png" alt="Christian Foss" onerror="this.style.display='none'"></div>
-                <span class="client-name">Christian Foss</span>
-            </div>
-            <div class="client-item">
-                <div class="client-circle"><img src="NEW REVISIONS/logos/zeno-realty.png" alt="Zeno Realty" onerror="this.style.display='none'"></div>
-                <span class="client-name">Zeno Realty</span>
-            </div>
+    <!-- ============ IMPACT / STATS ============ -->
+    <section id="impact" class="section container">
+        <div class="section-head reveal">
+            <h2 class="section-title display">The <span class="italic">Numbers</span></h2>
+            <p class="section-note">Real views on real work. YouTube counts update live — the total keeps growing.</p>
+        </div>
+
+        <div class="impact-hero reveal">
+            <div class="impact-big"><span class="count" id="impactTotal" data-count="124588">0</span><span
+                    class="impact-plus">+</span></div>
+            <div class="impact-big-label">Total views generated</div>
+        </div>
+
+        <div class="impact-grid" id="impactGrid">
+            <!-- YouTube (live) -->
+            <a class="impact-tile reveal rd-1" href="https://youtu.be/xiBtOsha1Io" target="_blank" rel="noopener"
+                data-yt="xiBtOsha1Io" data-seed="105133">
+                <div class="tile-num"><span class="count" data-count="105133">0</span></div>
+                <div class="tile-label"><span class="live-dot"></span>YouTube · Off The Menu #3</div>
+                <span class="tile-cta">Watch ↗</span>
+            </a>
+            <a class="impact-tile reveal rd-2" href="https://youtu.be/3BVNxJ6A_MY" target="_blank" rel="noopener"
+                data-yt="3BVNxJ6A_MY" data-seed="19455">
+                <div class="tile-num"><span class="count" data-count="19455">0</span></div>
+                <div class="tile-label"><span class="live-dot"></span>YouTube · Off The Menu #1</div>
+                <span class="tile-cta">Watch ↗</span>
+            </a>
+            <!-- Instagram highlights are injected here from the STATS config in JS -->
         </div>
     </section>
 
@@ -1657,7 +1942,7 @@
         ];
         const wall = document.getElementById('wall');
         const wallReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const colDurations = [46, 38, 52];
+        const colDurations = [28, 24, 32];
         let wallCols = -1;
 
         function makeCard(src) {
@@ -1707,6 +1992,91 @@
         // pause marquee on touch (mobile readability) and hover handled via CSS
         wall.addEventListener('touchstart', () => wall.classList.add('paused'), { passive: true });
         wall.addEventListener('touchend', () => setTimeout(() => wall.classList.remove('paused'), 1500), { passive: true });
+
+        /* ---------------- COUNT-UP + LIVE STATS ---------------- */
+        // Instagram view counts can't be fetched (IG blocks it) — these are
+        // static snapshots. Paste real numbers here to show them; leave empty to hide.
+        const IG_STATS = [
+            // { views: 0, label: 'Instagram · Reel', url: 'https://www.instagram.com/reel/XXXX/' },
+        ];
+
+        function fmt(n) { return Math.round(n).toLocaleString('en-US'); }
+
+        function animateCount(el, target, dur = 1600) {
+            const from = parseFloat(el.dataset.current || '0') || 0;
+            const t0 = performance.now();
+            function tick(now) {
+                const p = Math.min(1, (now - t0) / dur);
+                const eased = 1 - Math.pow(1 - p, 3);
+                const val = from + (target - from) * eased;
+                el.textContent = fmt(val);
+                if (p < 1) requestAnimationFrame(tick);
+                else { el.textContent = fmt(target); el.dataset.current = target; }
+            }
+            el.dataset.current = from;
+            requestAnimationFrame(tick);
+        }
+
+        // Inject Instagram highlight tiles (static) if provided
+        (function injectIG() {
+            const grid = document.getElementById('impactGrid');
+            IG_STATS.forEach((s, i) => {
+                const a = document.createElement('a');
+                a.className = 'impact-tile reveal';
+                a.href = s.url || '#';
+                if (s.url) { a.target = '_blank'; a.rel = 'noopener'; }
+                a.innerHTML = `<div class="tile-num"><span class="count" data-count="${s.views}">0</span></div>
+                    <div class="tile-label">${s.label || 'Instagram'}</div>
+                    <span class="tile-cta">${s.url ? 'View ↗' : ''}</span>`;
+                grid.appendChild(a);
+            });
+        })();
+
+        function recomputeTotal(reanimate) {
+            let total = 0;
+            document.querySelectorAll('.impact-tile .count[data-count]').forEach(c => {
+                total += parseInt(c.dataset.count, 10) || 0;
+            });
+            const el = document.getElementById('impactTotal');
+            if (!el) return;
+            el.dataset.count = total;
+            if (reanimate) animateCount(el, total, 1400);
+        }
+        recomputeTotal(false);
+
+        // Animate each counter when it scrolls into view (re-runs on every page load)
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    const el = e.target;
+                    animateCount(el, parseInt(el.dataset.count, 10) || 0);
+                    countObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.4 });
+        document.querySelectorAll('.count[data-count]').forEach(el => countObserver.observe(el));
+
+        // Live YouTube views via the serverless proxy; grows over time, updates without refresh
+        async function refreshYouTube(reanimate) {
+            try {
+                const r = await fetch('/api/yt-views', { cache: 'no-store' });
+                if (!r.ok) return;
+                const data = await r.json();
+                (data.videos || []).forEach(v => {
+                    document.querySelectorAll(`.count[data-count]`).forEach(el => {
+                        const holder = el.closest('[data-yt]');
+                        if (holder && holder.dataset.yt === v.id && v.views) {
+                            el.dataset.count = v.views;
+                            if (reanimate) animateCount(el, v.views, 1200);
+                        }
+                    });
+                });
+                recomputeTotal(reanimate);
+            } catch (e) { /* offline / no serverless — keep seed numbers */ }
+        }
+        // first refresh once counters have had a beat to seed-animate, then poll
+        setTimeout(() => refreshYouTube(true), 2500);
+        setInterval(() => refreshYouTube(true), 60000);
 
         /* ---------------- IMAGE LIGHTBOX ---------------- */
         const lightbox = document.getElementById('lightbox');
