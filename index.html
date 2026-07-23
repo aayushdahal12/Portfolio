@@ -2048,20 +2048,23 @@
             const el = document.getElementById('impactTotal');
             if (!el) return;
             el.dataset.count = total;
-            if (reanimate) animateCount(el, total, 1600);
+            // only animate the total if it's already on screen; otherwise the
+            // scroll observer will animate it to this value when the user arrives
+            if (reanimate && el.dataset.animated) animateCount(el, total, 1600);
         }
         recomputeTotal(false);
 
-        // Animate each counter when it scrolls into view (re-runs on every page load)
+        // Animate each counter the first time it scrolls into view (never before).
         const countObserver = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) {
                     const el = e.target;
+                    el.dataset.animated = '1';
                     animateCount(el, parseInt(el.dataset.count, 10) || 0);
                     countObserver.unobserve(el);
                 }
             });
-        }, { threshold: 0.4 });
+        }, { threshold: 0.35 });
         document.querySelectorAll('.count[data-count]').forEach(el => countObserver.observe(el));
 
         // Live YouTube views via the serverless proxy; grows over time, updates without refresh
@@ -2075,7 +2078,8 @@
                         const holder = el.closest('[data-yt]');
                         if (holder && holder.dataset.yt === v.id && v.views) {
                             el.dataset.count = v.views;
-                            if (reanimate) animateCount(el, v.views, 1200);
+                            // only re-animate counters already revealed by scrolling
+                            if (reanimate && el.dataset.animated) animateCount(el, v.views, 1200);
                         }
                     });
                 });
