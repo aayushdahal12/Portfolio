@@ -1,0 +1,12 @@
+# Local backups (do not deploy)
+_originals_backup/
+*.backup
+index.html.backup
+
+# macOS junk
+.DS_Store
+._*
+.__*
+.AppleDouble
+.Spotlight-V100
+.Trashes
