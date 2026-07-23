@@ -1333,8 +1333,13 @@
 
         @media (max-width: 640px) {
             .wall {
-                height: 540px;
-                gap: 12px;
+                height: 500px;
+                gap: 10px;
+            }
+
+            .wall-card {
+                margin-bottom: 10px;
+                border-radius: 10px;
             }
         }
 
@@ -1966,7 +1971,6 @@
         ];
         const wall = document.getElementById('wall');
         const wallReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const colDurations = [14, 11, 17];
         let wallCols = -1;
 
         function makeCard(src) {
@@ -1983,10 +1987,13 @@
 
         function buildWall() {
             const w = window.innerWidth;
-            const cols = w > 1024 ? 3 : (w > 640 ? 2 : 1);
+            const cols = w > 1024 ? 3 : 2; // 2 columns on tablet & mobile (smaller cards)
             if (cols === wallCols) return;
             wallCols = cols;
             wall.innerHTML = '';
+
+            // faster on smaller screens
+            const durs = w <= 640 ? [8, 10, 9] : (w <= 1024 ? [12, 15] : [14, 11, 17]);
 
             const buckets = Array.from({ length: cols }, () => []);
             wallImages.forEach((src, i) => buckets[i % cols].push(src));
@@ -1996,7 +2003,7 @@
                 col.className = 'wall-col' + (ci % 2 === 1 ? ' down' : '');
                 const track = document.createElement('div');
                 track.className = 'wall-track';
-                track.style.setProperty('--dur', colDurations[ci % colDurations.length] + 's');
+                track.style.setProperty('--dur', durs[ci % durs.length] + 's');
                 srcs.forEach(s => track.appendChild(makeCard(s)));
                 if (!wallReduced) {
                     // duplicate set for a seamless loop
