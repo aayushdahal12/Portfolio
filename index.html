@@ -1428,6 +1428,115 @@
             transform: translateZ(0);
         }
 
+        /* ---------- Book-a-call interstitial ---------- */
+        .book-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10003;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s var(--easing);
+        }
+
+        .book-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .book-card {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 40px 34px 34px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+            transform: translateY(14px) scale(0.98);
+            transition: transform 0.4s var(--easing);
+            text-align: left;
+        }
+
+        .book-modal.active .book-card {
+            transform: none;
+        }
+
+        .book-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            color: var(--grey);
+            margin-bottom: 14px;
+        }
+
+        .book-title {
+            font-family: var(--font-display);
+            font-weight: 500;
+            font-size: 30px;
+            letter-spacing: -0.01em;
+            margin-bottom: 14px;
+        }
+
+        .book-msg {
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: var(--grey);
+            margin-bottom: 28px;
+        }
+
+        .book-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .book-actions .btn-primary {
+            text-align: center;
+            padding: 14px 24px;
+        }
+
+        .book-continue {
+            text-align: center;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--grey);
+            padding: 6px;
+            transition: color 0.3s;
+        }
+
+        .book-continue:hover {
+            color: var(--text);
+        }
+
+        .book-close {
+            position: absolute;
+            top: 16px;
+            right: 18px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 20px;
+            line-height: 1;
+            color: var(--grey);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s, background 0.3s;
+        }
+
+        .book-close:hover {
+            color: var(--text);
+            background: var(--hover-tint);
+        }
+
         /* ============================================================
            MOBILE / iOS HARDENING
         ============================================================ */
@@ -1905,6 +2014,22 @@
         <img id="lightboxImg" src="" alt="Testimonial">
     </div>
 
+    <!-- ============ BOOK-A-CALL INTERSTITIAL ============ -->
+    <div class="book-modal" id="bookModal" role="dialog" aria-modal="true" aria-labelledby="bookTitle">
+        <div class="book-card">
+            <button class="book-close" id="bookClose" aria-label="Close">&times;</button>
+            <div class="book-eyebrow">One small thing</div>
+            <h3 class="book-title" id="bookTitle">Say hi first?</h3>
+            <p class="book-msg">Thank you for even thinking about working with me, it honestly means a lot. If you have a
+                minute, a quick message on Instagram helps me get to know you and your project before we talk. And if
+                you'd rather go straight to booking, that's completely okay too.</p>
+            <div class="book-actions">
+                <a href="https://www.instagram.com/aayush.cine/" target="_blank" rel="noopener" class="btn-primary">Message me on Instagram ↗</a>
+                <a href="https://calendly.com/aayush-cine/30min" target="_blank" rel="noopener" class="book-continue" id="bookContinue">Continue to booking →</a>
+            </div>
+        </div>
+    </div>
+
     <!-- ============ FULLSCREEN PLAYER ============ -->
     <div class="player" id="player">
         <button class="player-close" id="playerClose" aria-label="Close">&times;</button>
@@ -2210,6 +2335,37 @@
         player.addEventListener('click', e => { if (e.target === player) closePlayer(); });
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && player.classList.contains('active')) closePlayer();
+        });
+
+        /* ---------------- BOOK-A-CALL INTERSTITIAL ---------------- */
+        const bookModal = document.getElementById('bookModal');
+        const bookCloseBtn = document.getElementById('bookClose');
+
+        function openBook() {
+            bookModal.classList.add('active');
+            if (lenis) lenis.stop();
+            document.body.style.overflow = 'hidden';
+        }
+        function closeBook() {
+            bookModal.classList.remove('active');
+            if (lenis) lenis.start();
+            document.body.style.overflow = '';
+        }
+
+        // Any link that leads to the booking page shows the message first
+        // (links inside the modal keep their normal behaviour).
+        document.querySelectorAll('a[href*="calendly.com"]').forEach(a => {
+            if (a.closest('#bookModal')) return;
+            a.addEventListener('click', e => { e.preventDefault(); openBook(); });
+        });
+        // Clicking either action inside the modal closes it (they open in a new tab)
+        document.querySelectorAll('.book-actions a').forEach(a => {
+            a.addEventListener('click', () => setTimeout(closeBook, 150));
+        });
+        bookCloseBtn.addEventListener('click', closeBook);
+        bookModal.addEventListener('click', e => { if (e.target === bookModal) closeBook(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && bookModal.classList.contains('active')) closeBook();
         });
 
         /* ---------------- FAQ ACCORDION ---------------- */
