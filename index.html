@@ -7,9 +7,8 @@
     <title>Aayush Cine | Designed to Be Remembered</title>
     <meta name="description"
         content="Aayush Cine — Professional Video Editor & Visual Storyteller. Designed to be remembered.">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#ffffff">
 
-    <!-- Preload the hero poster for instant paint -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- EB Garamond as a robust web fallback for Apple Garamond -->
@@ -19,16 +18,17 @@
 
     <style>
         /* ============================================================
-           PURE BLACK & WHITE · GARAMOND-LED
+           PURE WHITE BASE · BLACK SECONDARY · GARAMOND-LED
            Only the video thumbnails carry colour.
         ============================================================ */
         :root {
-            --bg: #000000;
-            --text: #ffffff;
-            --grey: #8a8a8a;
-            --grey-dim: #5a5a5a;
-            --line: rgba(255, 255, 255, 0.10);
-            --line-soft: rgba(255, 255, 255, 0.06);
+            --bg: #ffffff;
+            --text: #0a0a0a;
+            --grey: #6b6b6b;
+            --grey-dim: #9a9a9a;
+            --line: rgba(0, 0, 0, 0.13);
+            --line-soft: rgba(0, 0, 0, 0.08);
+            --card-bg: #ececec;
 
             /* Type */
             --font-display: 'EB Garamond', 'Apple Garamond', 'Georgia', serif;
@@ -38,7 +38,6 @@
             --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
         }
 
-        /* Apple Garamond — used if the user has it locally, else EB Garamond loads */
         @font-face {
             font-family: 'Apple Garamond';
             src: local('Apple Garamond'), local('AppleGaramond');
@@ -58,11 +57,9 @@
             font-weight: 400;
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
-            /* Lenis controls scroll; keep native fallback smooth */
             scroll-behavior: smooth;
         }
 
-        /* Lenis smooth-scroll base */
         html.lenis,
         html.lenis body {
             height: auto;
@@ -84,26 +81,25 @@
         }
 
         ::selection {
-            background: #fff;
-            color: #000;
+            background: #0a0a0a;
+            color: #fff;
         }
 
-        /* Slim monochrome scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #000;
+            background: #fff;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #2a2a2a;
+            background: #cfcfcf;
             border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #444;
+            background: #999;
         }
 
         a {
@@ -230,9 +226,9 @@
         }
 
         .navbar.scrolled {
-            background: rgba(0, 0, 0, 0.72);
-            backdrop-filter: blur(20px) saturate(1.2);
-            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
             border-bottom: 1px solid var(--line-soft);
             padding: 15px 0;
         }
@@ -256,7 +252,7 @@
         .logo-mark {
             width: 34px;
             height: 34px;
-            background: #000;
+            background: transparent;
             border: 1px solid var(--line);
             border-radius: 50%;
             overflow: hidden;
@@ -285,7 +281,7 @@
             left: 0;
             width: 100%;
             height: 1px;
-            background: #fff;
+            background: var(--text);
             transform: scaleX(0);
             transform-origin: right;
             transition: transform 0.45s var(--easing);
@@ -368,8 +364,8 @@
         }
 
         .btn-primary {
-            background: #fff;
-            color: #000;
+            background: var(--text);
+            color: var(--bg);
             padding: 15px 30px;
             border-radius: 100px;
             font-weight: 600;
@@ -380,7 +376,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            opacity: 0.9;
+            opacity: 0.85;
         }
 
         .btn-ghost {
@@ -391,7 +387,7 @@
         }
 
         .btn-ghost:hover {
-            color: #fff;
+            color: var(--text);
         }
 
         .scroll-hint {
@@ -448,29 +444,85 @@
         }
 
         /* ============================================================
+           LONG-FORM · 16:9 landscape cards
+        ============================================================ */
+        .long-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .long-card {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            border-radius: 14px;
+            overflow: hidden;
+            background: var(--card-bg);
+            cursor: pointer;
+            border: 1px solid var(--line-soft);
+            transition: transform 0.5s var(--easing), border-color 0.4s, box-shadow 0.5s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .long-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--line);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.10);
+        }
+
+        .long-card .poster,
+        .long-card video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .long-card video {
+            opacity: 0;
+            transition: opacity 0.5s var(--easing);
+            z-index: 1;
+        }
+
+        .long-card.playing video {
+            opacity: 1;
+        }
+
+        .long-card .poster {
+            transition: transform 0.7s var(--easing);
+            z-index: 0;
+        }
+
+        .long-card:hover .poster {
+            transform: scale(1.04);
+        }
+
+        /* ============================================================
            SHORT-FORM · 9:16 vertical cards
         ============================================================ */
         .reel-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 14px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
         }
 
         .reel-card {
             position: relative;
             aspect-ratio: 9 / 16;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            background: #0a0a0a;
+            background: var(--card-bg);
             cursor: pointer;
             border: 1px solid var(--line-soft);
-            transition: transform 0.5s var(--easing), border-color 0.4s;
+            transition: transform 0.5s var(--easing), border-color 0.4s, box-shadow 0.5s;
             -webkit-tap-highlight-color: transparent;
         }
 
         .reel-card:hover {
             transform: translateY(-6px);
             border-color: var(--line);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.10);
         }
 
         .reel-card .poster,
@@ -493,7 +545,7 @@
         }
 
         .reel-card .poster {
-            transition: transform 0.7s var(--easing), opacity 0.5s;
+            transition: transform 0.7s var(--easing);
             z-index: 0;
         }
 
@@ -501,14 +553,13 @@
             transform: scale(1.05);
         }
 
-        /* dark gradient + label */
+        /* shared card chrome (over the video, stays dark for legibility) */
         .card-gradient {
             position: absolute;
             inset: 0;
             z-index: 2;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 42%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 42%);
             pointer-events: none;
-            opacity: 0.9;
             transition: opacity 0.4s;
         }
 
@@ -520,8 +571,9 @@
             font-size: 13px;
             font-weight: 500;
             letter-spacing: 0.01em;
+            color: #fff;
             pointer-events: none;
-            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
         }
 
         .card-play {
@@ -530,13 +582,13 @@
             left: 50%;
             z-index: 3;
             transform: translate(-50%, -50%) scale(0.9);
-            width: 54px;
-            height: 54px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: rgba(0, 0, 0, 0.35);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -545,7 +597,8 @@
             pointer-events: none;
         }
 
-        .reel-card:hover .card-play {
+        .reel-card:hover .card-play,
+        .long-card:hover .card-play {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
         }
@@ -560,98 +613,16 @@
             margin-left: 3px;
         }
 
-        /* ============================================================
-           LONG-FORM · 16:9 landscape cards
-        ============================================================ */
-        .long-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 22px;
-        }
-
-        .long-card {
-            position: relative;
-            aspect-ratio: 16 / 9;
-            border-radius: 14px;
-            overflow: hidden;
-            background: #0a0a0a;
-            cursor: pointer;
-            border: 1px solid var(--line-soft);
-            transition: transform 0.5s var(--easing), border-color 0.4s;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .long-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--line);
-        }
-
-        .long-card .poster,
-        .long-card video {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .long-card video {
-            opacity: 0;
-            transition: opacity 0.5s var(--easing);
-            z-index: 1;
-        }
-
-        .long-card.playing video {
-            opacity: 1;
-        }
-
-        .long-card:hover .poster {
-            transform: scale(1.04);
-        }
-
-        .long-card .poster {
-            transition: transform 0.7s var(--easing);
-        }
-
-        /* Placeholder (empty long-form slot) */
-        .long-card.placeholder {
-            cursor: default;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px dashed rgba(255, 255, 255, 0.14);
-            background:
-                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.015) 0 10px, transparent 10px 20px);
-        }
-
-        .long-card.placeholder:hover {
-            transform: none;
-        }
-
-        .placeholder-inner {
-            text-align: center;
-            color: var(--grey-dim);
-        }
-
-        .placeholder-inner .plus {
-            font-family: var(--font-display);
-            font-size: 40px;
-            font-weight: 400;
-            line-height: 1;
-            margin-bottom: 12px;
-            color: #333;
-        }
-
-        .placeholder-inner .p-label {
-            font-size: 11px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-        }
-
         /* ---------- Responsive grids ---------- */
         @media (max-width: 1024px) {
-            .reel-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .long-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .long-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -659,11 +630,6 @@
             .reel-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
-            }
-
-            .long-grid {
-                grid-template-columns: 1fr;
-                gap: 14px;
             }
 
             .reel-card,
@@ -705,7 +671,7 @@
             height: 88px;
             border-radius: 50%;
             overflow: hidden;
-            background: #0d0d0d;
+            background: #f2f2f2;
             border: 1px solid var(--line);
             flex-shrink: 0;
         }
@@ -748,13 +714,14 @@
             overflow: hidden;
             cursor: pointer;
             border: 1px solid var(--line-soft);
-            background: #0a0a0a;
-            transition: transform 0.5s var(--easing), border-color 0.4s;
+            background: var(--card-bg);
+            transition: transform 0.5s var(--easing), border-color 0.4s, box-shadow 0.5s;
         }
 
         .test-card:hover {
             transform: translateY(-4px);
             border-color: var(--line);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
         }
 
         .test-card img {
@@ -859,11 +826,11 @@
 
         .accordion-item[aria-expanded="true"] .accordion-icon {
             transform: rotate(45deg);
-            color: #fff;
+            color: var(--text);
         }
 
         .accordion-item[aria-expanded="true"] .accordion-title {
-            color: #fff;
+            color: var(--text);
         }
 
         @media (max-width: 900px) {
@@ -920,8 +887,8 @@
         }
 
         .btn-outline:hover {
-            border-color: #fff;
-            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--text);
+            background: rgba(0, 0, 0, 0.04);
         }
 
         .footer-bottom {
@@ -947,7 +914,7 @@
         }
 
         .footer-nav a:hover {
-            color: #fff;
+            color: var(--text);
         }
 
         .footer-copy {
@@ -963,7 +930,7 @@
             font-size: clamp(56px, 17vw, 230px);
             line-height: 0.8;
             margin-top: 70px;
-            -webkit-text-stroke: 1px #1c1c1c;
+            -webkit-text-stroke: 1px #e4e4e4;
             color: transparent;
             pointer-events: none;
             user-select: none;
@@ -987,8 +954,8 @@
         }
 
         /* ============================================================
-           FULLSCREEN VIDEO PLAYER
-           Sizes itself to the video (9:16 fills screen · 16:9 wide)
+           FULLSCREEN VIDEO PLAYER — dark immersive backdrop so
+           the video pops regardless of page theme.
         ============================================================ */
         .player {
             position: fixed;
@@ -1031,14 +998,12 @@
             border-radius: 10px;
             background: #000;
             box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7);
-            /* Vertical: tall but bounded by viewport height */
             max-height: min(90svh, 1200px);
             max-width: 100%;
             width: auto;
             height: auto;
         }
 
-        /* landscape long-form videos get width priority */
         .player.landscape video {
             width: min(94vw, 1280px);
             max-height: 88svh;
@@ -1052,7 +1017,7 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            border: 1px solid var(--line);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             background: rgba(0, 0, 0, 0.4);
             color: #fff;
             font-size: 22px;
@@ -1068,7 +1033,6 @@
             transform: rotate(90deg);
         }
 
-        /* Loading spinner while the file buffers */
         .player-spinner {
             position: absolute;
             width: 40px;
@@ -1123,58 +1087,13 @@
         <div class="hero-btns">
             <a href="https://calendly.com/aayush-cine/30min" target="_blank" rel="noopener" class="btn-primary">Book a
                 Call</a>
-            <a href="#short-form" class="btn-ghost">See the Work ↓</a>
+            <a href="#long-form" class="btn-ghost">See the Work ↓</a>
         </div>
         <div class="scroll-hint">
             <span>Scroll</span>
             <span></span>
         </div>
     </header>
-
-    <!-- ============ SHORT FORM ============ -->
-    <section id="short-form" class="section container">
-        <div class="section-head reveal">
-            <h2 class="section-title display">Short Form <span class="italic">/ Reels</span></h2>
-            <p class="section-note">Vertical edits built for retention — TikTok, Reels & Shorts that stop the scroll.</p>
-        </div>
-
-        <div class="reel-grid">
-            <div class="reel-card reveal rd-1" data-video="videos and thumbnail/videos/v1.mp4" data-label="Leviathan Nutrition">
-                <img src="NEW REVISIONS/videos/thumb-1.jpg" class="poster" alt="Leviathan Nutrition" loading="lazy">
-                <div class="card-gradient"></div>
-                <div class="card-play"></div>
-                <div class="card-label">Leviathan Nutrition</div>
-            </div>
-
-            <div class="reel-card reveal rd-1" data-video="videos and thumbnail/videos/v2.mp4" data-label="Aayush Swamy">
-                <img src="NEW REVISIONS/videos/thumb-2.jpg" class="poster" alt="Aayush Swamy" loading="lazy">
-                <div class="card-gradient"></div>
-                <div class="card-play"></div>
-                <div class="card-label">Aayush Swamy</div>
-            </div>
-
-            <div class="reel-card reveal rd-2" data-video="videos and thumbnail/videos/V3.mp4" data-label="Christian Foss">
-                <img src="NEW REVISIONS/videos/thumb-3.jpg" class="poster" alt="Christian Foss" loading="lazy">
-                <div class="card-gradient"></div>
-                <div class="card-play"></div>
-                <div class="card-label">Christian Foss</div>
-            </div>
-
-            <div class="reel-card reveal rd-2" data-video="videos and thumbnail/videos/V4.mp4" data-label="Devin Jatho">
-                <img src="NEW REVISIONS/videos/thumb-4.jpg" class="poster" alt="Devin Jatho" loading="lazy">
-                <div class="card-gradient"></div>
-                <div class="card-play"></div>
-                <div class="card-label">Devin Jatho</div>
-            </div>
-
-            <div class="reel-card reveal rd-3" data-video="videos and thumbnail/videos/v5.mp4" data-label="Featured Edit">
-                <img src="NEW REVISIONS/videos/thumb-5.jpg" class="poster" alt="Featured Edit" loading="lazy">
-                <div class="card-gradient"></div>
-                <div class="card-play"></div>
-                <div class="card-label">Featured Edit</div>
-            </div>
-        </div>
-    </section>
 
     <!-- ============ LONG FORM ============ -->
     <section id="long-form" class="section container">
@@ -1184,18 +1103,79 @@
         </div>
 
         <div class="long-grid">
-            <!-- Drop a 16:9 video path into data-video and a poster into the img src to activate a slot -->
-            <div class="long-card placeholder">
-                <div class="placeholder-inner">
-                    <div class="plus">+</div>
-                    <div class="p-label">Long-form coming soon</div>
-                </div>
+            <div class="long-card reveal rd-1" data-video="long-form/V1.mp4" data-label="Brand Film">
+                <img src="long-form/T1.jpg" class="poster" alt="Brand Film" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">Brand Film</div>
             </div>
-            <div class="long-card placeholder">
-                <div class="placeholder-inner">
-                    <div class="plus">+</div>
-                    <div class="p-label">Long-form coming soon</div>
-                </div>
+
+            <div class="long-card reveal rd-2" data-video="long-form/V2.mp4" data-label="Podcast">
+                <img src="long-form/T2.jpg" class="poster" alt="Podcast" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">Podcast</div>
+            </div>
+
+            <div class="long-card reveal rd-3" data-video="long-form/V3.mp4" data-label="YouTube Edit">
+                <img src="long-form/T3.jpg" class="poster" alt="YouTube Edit" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">YouTube Edit</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SHORT FORM ============ -->
+    <section id="short-form" class="section container">
+        <div class="section-head reveal">
+            <h2 class="section-title display">Short Form <span class="italic">/ Reels</span></h2>
+            <p class="section-note">Vertical edits built for retention — TikTok, Reels & Shorts that stop the scroll.</p>
+        </div>
+
+        <div class="reel-grid">
+            <!-- New short forms -->
+            <div class="reel-card reveal rd-1" data-video="short-form/s1.mp4" data-label="Featured Reel">
+                <img src="short-form/s1.jpg" class="poster" alt="Featured Reel" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">Featured Reel</div>
+            </div>
+
+            <div class="reel-card reveal rd-1" data-video="short-form/s2.mp4" data-label="Short Form Edit">
+                <img src="short-form/s2.jpg" class="poster" alt="Short Form Edit" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">Short Form Edit</div>
+            </div>
+
+            <div class="reel-card reveal rd-2" data-video="short-form/s3.mp4" data-label="Reel Edit">
+                <img src="short-form/s3.jpg" class="poster" alt="Reel Edit" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">Reel Edit</div>
+            </div>
+
+            <!-- Existing short forms -->
+            <div class="reel-card reveal rd-2" data-video="videos and thumbnail/videos/v1.mp4" data-label="Leviathan Nutrition">
+                <img src="NEW REVISIONS/videos/thumb-1.jpg" class="poster" alt="Leviathan Nutrition" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">Leviathan Nutrition</div>
+            </div>
+
+            <div class="reel-card reveal rd-3" data-video="videos and thumbnail/videos/v2.mp4" data-label="Aayush Swamy">
+                <img src="NEW REVISIONS/videos/thumb-2.jpg" class="poster" alt="Aayush Swamy" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">Aayush Swamy</div>
+            </div>
+
+            <div class="reel-card reveal rd-3" data-video="videos and thumbnail/videos/V4.mp4" data-label="Devin Jatho">
+                <img src="NEW REVISIONS/videos/thumb-4.jpg" class="poster" alt="Devin Jatho" loading="lazy">
+                <div class="card-gradient"></div>
+                <div class="card-play"></div>
+                <div class="card-label">Devin Jatho</div>
             </div>
         </div>
     </section>
@@ -1316,8 +1296,8 @@
             <div class="footer-bottom">
                 <div>Aayush Cine</div>
                 <nav class="footer-nav">
-                    <a href="#short-form">Short Form</a>
                     <a href="#long-form">Long Form</a>
+                    <a href="#short-form">Short Form</a>
                     <a href="#testimonials">Reviews</a>
                     <a href="#faq">FAQ</a>
                 </nav>
@@ -1356,7 +1336,6 @@
             requestAnimationFrame(raf);
         }
 
-        /* Anchor links -> smooth scroll via Lenis (fallback to native) */
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 const id = a.getAttribute('href');
@@ -1409,7 +1388,7 @@
                     vid.currentTime = 0;
                     const p = vid.play();
                     if (p) p.then(() => card.classList.add('playing')).catch(() => { });
-                }, 120); // small delay avoids loading on quick pass-overs
+                }, 120);
             });
 
             card.addEventListener('mouseleave', () => {
